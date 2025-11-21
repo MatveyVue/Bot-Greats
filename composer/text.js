@@ -6,19 +6,9 @@ const forwardChatId = '-1002647773080'; // ID чата для пересылки
 const bot = new Telegraf(token);
 
 bot.start(async (ctx) => {
-    const buttons = {
-        reply_markup: {
-            inline_keyboard: [
-                [{ text: 'Go To Jobs', url: 'https://t.me/GreatsJobsBot/GreatsJobs' }],
-                [{ text: 'Community', url: 'https://t.me/@whsxg0' }]
-            ]
-        },
-        parse_mode: 'HTML'
-    };
-
     await ctx.reply(
-        `Looking for employees or a job in @GreatsJobsBot.`,
-        buttons
+        `Привет я бот который пересылает сообщения в чат @nagpz анонимно`,
+        }
     );
 });
 
