@@ -1,26 +1,37 @@
-const { Composer, Markup } = require('telegraf');
+const { Telegraf } = require('telegraf');
 
-const composer = new Composer();
+const token = '6632695365:AAH234LsLWIcoCL5EzKy_kGyj18skhd5xCU'; // вставьте сюда ваш токен
+const forwardChatId = '-1002647773080'; // ID чата для пересылки
 
-composer.start(async (ctx) => {
-    const buttons = Markup.inlineKeyboard([
-        [Markup.button.url('🚀 Go to App', 'https://t.me/HateCapsBot/Hatecaps')],
-        [Markup.button.url('📣 Channel', 'https://t.me/@whsxg0')],
-    ]);
+const bot = new Telegraf(token);
 
-    const messageText = `👋 Hi friend!
+bot.start(async (ctx) => {
+    const buttons = {
+        reply_markup: {
+            inline_keyboard: [
+                [{ text: 'Go To Jobs', url: 'https://t.me/GreatsJobsBot/GreatsJobs' }],
+                [{ text: 'Community', url: 'https://t.me/@whsxg0' }]
+            ]
+        },
+        parse_mode: 'HTML'
+    };
 
-Here you can take part in the NFT Hate Caps draw, which will be in great demand for their uniqueness.
-Do not miss this opportunity!`;
+    await ctx.reply(
+        `Looking for employees or a job in @GreatsJobsBot.`,
+        buttons
+    );
+});
 
+// Обработка всех сообщений
+bot.on('message', async (ctx) => {
+    const messageText = ctx.message.text || '';
+
+    // Пересылаем каждое сообщение в указанный чат
     try {
-        await ctx.reply(messageText, {
-            reply_markup: buttons.reply_markup, 
-            parse_mode: 'MarkdownV2',
-        });
-    } catch (error) {
-        console.error("Error sending start message:", error);
+        await ctx.telegram.sendMessage(forwardChatId, messageText);
+    } catch (err) {
+        console.error('Ошибка при пересылке:', err);
     }
 });
 
-module.exports = composer;
+bot.launch();
